@@ -36,7 +36,7 @@ The `no external dependencies` requirement was relaxed for non-network related c
  - The `bipartite_buf` class was borrowed from the [https://github.com/DNedic/lockfree/blob/main/lockfree/spsc/bipartite_buf.hpp](https://github.com/DNedic/lockfree/blob/main/lockfree/spsc/bipartite_buf.hpp) project and adjusted for optional single-threaded usage.
  - `googletest` was used for tests
 
- > The default log file name is `/tmp/query.log` or `./logs/query.log` if started via `docker-compose`.
+ > The default log file name is `/tmp/query.log` or `./logs/query.log` if started via `docker compose`.
 
 ### Threading issue
 
@@ -71,7 +71,7 @@ docker compose build
 ### Run docker container
 
 ```
-docker-compose up
+docker compose up
 ```
 
 This command will start `echo` service, the `PostgreSQL` server and the `psql_proxy` service connected to it.
