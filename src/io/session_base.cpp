@@ -20,22 +20,16 @@ void io::ip::tcp::session_base::start()
     {
         if (mask.test(io::flags::error))
         {
-            std::for_each(
-                _fds.rbegin(),
-                _fds.rend(),
-                [&](io::file_descriptor_t fd)
-                {
-                    _bus->del_fd_callbacks(fd);
-                });
+            for (io::file_descriptor_t fd : _fds)
+            {
+                _bus->del_fd_callbacks(fd);
+            }
         }
     };
-    std::for_each(
-        _fds.begin(),
-        _fds.end(),
-        [&](io::file_descriptor_t fd)
-        {
-            _bus->add_fd(fd, cb);
-        });
+    for (io::file_descriptor_t fd : _fds)
+    {
+        _bus->add_fd(fd, cb);
+    }
 }
 
 // LCOV_EXCL_START

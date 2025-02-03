@@ -111,31 +111,12 @@ void io::channel::_handle_left_io_event(io::event_reciever *reciever, io::file_d
                         IO_DEBUG((std::cout << std::endl));
                         IO_DEBUG((std::copy(static_cast<const char *>(res.buf), std::next(static_cast<const char *>(res.buf), res.buf_len), std::ostreambuf_iterator<char>(std::cout))));
                         IO_DEBUG((std::cout << std::endl));
-                        // if (0ul == res.buf_len)
-                        // {
-                        //     switch (errno)
-                        //     {
-                        //     case EINTR:
-                        //         break;
-                        //     case EAGAIN:
-                        //         break;
-                        //     case EINPROGRESS:
-                        //         break;
-                        //     default:
-                        //         // connection closed - force error handler call to close the session
-                        //         IO_DEBUG((std::cout << "channel::_handle_left_io_event: zero from recv: fd = " << fd << "; mask = " << mask << "; errno = " << errno << std::endl));
-                        //         reciever->enqueue_event(fd, io::flags::error);
-                        //     }
-                        // }
-                        // else if (CHUNK_SZ == res.buf_len)
-                        // {
-                        //     // try to read more
-                        //     reciever->enqueue_event(fd, io::flags::in);
-                        // }
                     }};
                 std::visit(v, result);
-                std::for_each(_handlers.begin(), _handlers.end(), [&result](input_callback_t &handler)
-                              { handler(result); });
+                for (input_callback_t &handler : _handlers)
+                {
+                    handler(result);
+                }
             }
             else
             {

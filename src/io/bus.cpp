@@ -45,45 +45,38 @@ void io::bus::wait_events(int timeout_msec, std::size_t events_buf_size, io::bus
 {
     auto cb = [this, error_callback](event_reciever *reciever, file_descriptor_t fd, flags mask)
     {
-        auto cb = [this, fd, mask, error_callback, reciever](callback_t callback)
-        {
-            try
-            {
-                if (_callbacks_to_remove.end() == _callbacks_to_remove.find(fd))
-                {
-                    callback(reciever, fd, mask);
-                }
-            }
-            catch (io::error &ex)
-            {
-                error_callback(reciever, ex);
-            }
-            catch (std::exception &ex)
-            {
-                error_callback(reciever, io::error(ex.what(), fd, errno));
-            }
-            catch (...)
-            {
-                error_callback(reciever, io::error("unknown io error", fd, errno));
-            }
-        };
-
         auto i = _callback_map.find(fd);
         if (_callback_map.end() != i)
         {
-            std::for_each(i->second.begin(), i->second.end(), cb);
+            for (const auto &callback : i->second)
+            {
+                try
+                {
+                    if (_callbacks_to_remove.end() == _callbacks_to_remove.find(fd))
+                    {
+                        callback(reciever, fd, mask);
+                    }
+                }
+                catch (io::error &ex)
+                {
+                    error_callback(reciever, ex);
+                }
+                catch (std::exception &ex)
+                {
+                    error_callback(reciever, io::error(ex.what(), fd, errno));
+                }
+                catch (...)
+                {
+                    error_callback(reciever, io::error("unknown io error", fd, errno));
+                }
+            }
         }
 
         // remove callbacks for closed connections
-        auto beg = _callbacks_to_remove.begin();
-        auto end = _callbacks_to_remove.end();
-        std::for_each(
-            beg,
-            end,
-            [this](io::file_descriptor_t fd_to_remove)
-            {
-                _callback_map.erase(fd_to_remove);
-            });
+        for (io::file_descriptor_t fd_to_remove : _callbacks_to_remove)
+        {
+            _callback_map.erase(fd_to_remove);
+        }
         _callbacks_to_remove.clear();
     };
     try

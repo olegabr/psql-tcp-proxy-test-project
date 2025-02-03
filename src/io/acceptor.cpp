@@ -6,8 +6,7 @@
 #include "error.hpp"
 #include "log.hpp"
 
-#include <algorithm> // std::for_each
-#include <string>	 // std::to_string
+#include <string> // std::to_string
 #include <iostream>
 
 #include <unistd.h>		// ::close

@@ -7,7 +7,6 @@
 #include "log.hpp"
 
 #include <iostream>
-#include <algorithm> // std::for_each
 #include <utility>
 
 #include <unistd.h> // ::close
@@ -100,7 +99,7 @@ void io::system::epoll::_wait_events(int timeout_msec, std::size_t events_buf_si
     else
     {
         _events_buff.resize(ret);
-        auto cb = [&callback, this](const event_t &event)
+        for (const event_t &event : _events_buff)
         {
             if (_native_callback)
             {
@@ -116,7 +115,6 @@ void io::system::epoll::_wait_events(int timeout_msec, std::size_t events_buf_si
                 }
                 callback(this, event.data.fd, flags);
             }
-        };
-        std::for_each(_events_buff.begin(), _events_buff.end(), cb);
+        }
     }
 }

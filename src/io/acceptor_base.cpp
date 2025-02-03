@@ -21,8 +21,10 @@ io::ip::acceptor_base::acceptor_base(const io::bus_ptr &io_bus, io::file_descrip
             if (0 < conn)
             {
                 const io::ip::v4 &address = res.second;
-                std::for_each(_callbacks.begin(), _callbacks.end(), [conn, address](auto callback)
-                              { callback(conn, address); });
+                for (const auto &callback : _callbacks)
+                {
+                    callback(conn, address);
+                }
             }
         });
 }
