@@ -23,7 +23,7 @@ namespace io
         public:
             object_base_mock(io::bus_ptr bus, io::file_descriptor_t fd);
             /// @brief Make sure the object is correctly destructed
-            virtual ~object_base_mock();
+            ~object_base_mock() override;
 
             void set_throw_error(bool val);
             void set_result_buf_len(int val);
@@ -33,12 +33,11 @@ namespace io
             /// @brief Get the underlying file descriptor value for this I/O object
             /// Pure virtual function. Implement it in the inherited concrete I/O object class.
             /// @return The underlying file descriptor value for this I/O object
-            virtual file_descriptor_t
-            _get_fd() const;
+            file_descriptor_t _get_fd() const override;
             /// @brief Get the underlying \ref io::bus object for this I/O object
             /// Pure virtual function. Implement it in the inherited concrete I/O object class.
             /// @return The underlying \ref io::bus object for this I/O object
-            virtual const bus_ptr &_get_bus();
+            const bus_ptr &_get_bus() override;
 
         protected:
             bool _throw_error;
@@ -58,7 +57,7 @@ namespace io
         public:
             input_object_mock(io::bus_ptr bus, io::file_descriptor_t fd);
             /// @brief Make sure the object is correctly destructed
-            virtual ~input_object_mock();
+            ~input_object_mock() override;
 
         private:
             /// @brief Read available data asynchronously.
@@ -66,7 +65,7 @@ namespace io
             /// @param buf The buffer to write the recieved data to
             /// @param buf_len The length of the \p buf
             /// @return The \ref result_type with length of data read or error occured
-            virtual result_type _async_read_some(value_t *buf, std::size_t buf_len);
+            result_type _async_read_some(value_t *buf, std::size_t buf_len) override;
         };
 
         /// \brief The async output object abstraction.
@@ -77,7 +76,7 @@ namespace io
         public:
             output_object_mock(io::bus_ptr bus, io::file_descriptor_t fd);
             /// @brief Make sure the object is correctly destructed
-            virtual ~output_object_mock();
+            ~output_object_mock() override;
 
         private:
             /// @brief Write data asynchronously.
@@ -85,7 +84,7 @@ namespace io
             /// @param buf The buffer of data to write from
             /// @param buf_len The length of the \p buf
             /// @return The \ref result_type with length of data written or error occured
-            virtual result_type _async_write_some(const value_t *buf, std::size_t buf_len);
+            result_type _async_write_some(const value_t *buf, std::size_t buf_len) override;
         };
         /// \brief The async output object abstraction smart pointer.
 
@@ -97,7 +96,7 @@ namespace io
         public:
             io_object_mock(io::bus_ptr bus, io::file_descriptor_t fd);
             /// @brief Make sure the object is correctly destructed
-            virtual ~io_object_mock();
+            ~io_object_mock() override;
 
         private:
             /// @brief Read available data asynchronously.
@@ -105,13 +104,13 @@ namespace io
             /// @param buf The buffer to write the recieved data to
             /// @param buf_len The length of the \p buf
             /// @return The \ref result_type with length of data read or error occured
-            virtual io::input_object::result_type _async_read_some(value_t *buf, std::size_t buf_len);
+            io::input_object::result_type _async_read_some(value_t *buf, std::size_t buf_len) override;
             /// @brief Write data asynchronously.
             /// Pure virtual function. Implement it in the inherited concrete I/O object class.
             /// @param buf The buffer of data to write from
             /// @param buf_len The length of the \p buf
             /// @return The \ref result_type with length of data written or error occured
-            virtual io::output_object::result_type _async_write_some(const value_t *buf, std::size_t buf_len);
+            io::output_object::result_type _async_write_some(const value_t *buf, std::size_t buf_len) override;
         };
     }
 }

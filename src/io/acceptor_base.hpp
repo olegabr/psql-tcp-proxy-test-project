@@ -39,7 +39,7 @@ namespace io
             /// @param fd The already opened socket file descriptor
             explicit acceptor_base(const io::bus_ptr &io_bus, io::file_descriptor_t fd);
             /// @brief The acceptor destructor
-            virtual ~acceptor_base();
+            ~acceptor_base() override;
 
             /// @brief remove file descriptor from \ref io::bus
             void _close();
@@ -57,10 +57,10 @@ namespace io
         private:
             /// @brief Get the underlying file descriptor value for this socket
             /// @return The underlying file descriptor value for this socket
-            virtual file_descriptor_t _get_fd() const;
+            file_descriptor_t _get_fd() const override;
             /// @brief Get the underlying \ref io::bus object for this socket
             /// @return The underlying \ref io::bus object for this socket
-            virtual const io::bus_ptr &_get_bus();
+            const io::bus_ptr &_get_bus() override;
 
         private:
             /// \brief Handle the new client connection event

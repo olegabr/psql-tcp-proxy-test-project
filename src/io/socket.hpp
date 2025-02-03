@@ -44,7 +44,7 @@ namespace io
 					const io::ip::v4 &address);
 
 				/// @brief Make sure the object is correctly destructed
-				virtual ~socket();
+				~socket() override;
 
 				/// \brief copy is prohibited
 				socket(const socket &) = delete;
@@ -59,21 +59,21 @@ namespace io
 			private:
 				/// @brief Get the underlying file descriptor value for this socket
 				/// @return The underlying file descriptor value for this socket
-				virtual io::file_descriptor_t _get_fd() const;
+				io::file_descriptor_t _get_fd() const override;
 				/// @brief Get the underlying \ref io::bus object for this socket
 				/// @return The underlying \ref io::bus object for this socket
-				virtual const io::bus_ptr &_get_bus();
+				const io::bus_ptr &_get_bus() override;
 
 				/// @brief Read available data asynchronously.
 				/// @param buf The buffer to write the recieved data to
 				/// @param buf_len The length of the \p buf
 				/// @return The \ref result_type with length of data read or error occured
-				virtual io::input_object::result_type _async_read_some(value_t *buf, std::size_t buf_len);
+				io::input_object::result_type _async_read_some(value_t *buf, std::size_t buf_len) override;
 				/// @brief Write data asynchronously.
 				/// @param buf The buffer of data to write from
 				/// @param buf_len The length of the \p buf
 				/// @return The \ref result_type with length of data written or error occured
-				virtual io::output_object::result_type _async_write_some(const value_t *buf, std::size_t buf_len);
+				io::output_object::result_type _async_write_some(const value_t *buf, std::size_t buf_len) override;
 
 			private:
 				/// @brief Close this socket

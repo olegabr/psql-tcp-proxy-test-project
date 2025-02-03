@@ -23,7 +23,7 @@ namespace io
             /// \param fds File descriptors related to this session
             session_base_mock(const io::bus_ptr &bus, io::file_descriptors_vec_t fds);
             /// \brief Destruct the session base class for a TCP service
-            virtual ~session_base_mock() noexcept;
+            ~session_base_mock() noexcept override;
         };
     }
 }

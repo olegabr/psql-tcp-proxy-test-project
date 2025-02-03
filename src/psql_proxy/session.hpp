@@ -27,7 +27,7 @@ namespace psql_proxy
             const socket_ptr_t &socket,
             const socket_ptr_t &target_socket,
             query_processor *query_processor);
-        ~session();
+        ~session() final;
 
     private:
         io::channel_ptr _socket_pipe_lr;

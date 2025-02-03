@@ -23,7 +23,7 @@ namespace io
         /// @param fd The file descriptor related to this I/O error
         /// @param errno_val The errno value related to this I/O error
         error(const std::string &msg, file_descriptor_t fd, int errno_val);
-        virtual ~error();
+        ~error() override;
 
         /// @brief Get the file descriptor related to this I/O error
         /// @return The file descriptor related to this I/O error

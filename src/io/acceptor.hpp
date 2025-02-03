@@ -42,7 +42,7 @@ namespace io
 					int tcp_backlog,
 					callback_t callback = nullptr);
 				/// @brief The acceptor destructor
-				virtual ~acceptor();
+				~acceptor() override;
 
 			private:
 				/// \brief Handle the new client connection event
@@ -50,7 +50,7 @@ namespace io
 				/// @param fd The file descriptor
 				/// @param mask The I/O event mask
 				/// @return The accepted client's address
-				virtual std::pair<io::file_descriptor_t, io::ip::v4> _accept_new_client(io::event_reciever *reciever, io::file_descriptor_t fd, io::flags mask);
+				std::pair<io::file_descriptor_t, io::ip::v4> _accept_new_client(io::event_reciever *reciever, io::file_descriptor_t fd, io::flags mask) override;
 
 			private:
 				/// \brief address The \ref ip::v4 address like `127.0.0.1`

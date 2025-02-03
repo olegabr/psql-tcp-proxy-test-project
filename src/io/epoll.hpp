@@ -37,7 +37,7 @@ namespace io
 			/// @param callback The native epoll callback.
 			explicit epoll(event_mask_t event_mask, native_callback_t callback = nullptr);
 			/// @brief Make sure the object is correctly destructed
-			virtual ~epoll() noexcept;
+			~epoll() noexcept override;
 
 			/// \brief copy is prohibited
 			epoll(const epoll &) = delete; // non construction-copyable
@@ -53,11 +53,11 @@ namespace io
 			/// @brief Listen on the \p fd file descriptor.
 			/// The \ref io::bus::_add_fd pure virtual function implementation.
 			/// @param fd The file descriptor
-			virtual void _add_fd(file_descriptor_t fd);
+			void _add_fd(file_descriptor_t fd) override;
 			/// @brief Stop listening on the \p fd file descriptor
 			/// The \ref io::bus::_del_fd pure virtual function implementation.
 			/// @param fd The file descriptor
-			virtual void _del_fd(file_descriptor_t fd);
+			void _del_fd(file_descriptor_t fd) override;
 
 			/// @brief Wait for I/O events on this bus object.
 			/// It waits for the \p timeout_msec milliseconds or
@@ -66,7 +66,7 @@ namespace io
 			/// @param timeout_msec The maximum time to wait for events, in milliseconds. Or -1 for infinit wait.
 			/// @param events_buf_size The events buffer size
 			/// @param callback The I/O bus async event callback function to be called for each I/O event triggered.
-			virtual void _wait_events(int timeout_msec, std::size_t events_buf_size, io::bus::callback_t callback);
+			void _wait_events(int timeout_msec, std::size_t events_buf_size, io::bus::callback_t callback) override;
 
 		private:
 			/// \brief The epoll file descriptor.

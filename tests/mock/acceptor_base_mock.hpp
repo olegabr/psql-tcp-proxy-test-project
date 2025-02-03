@@ -33,7 +33,7 @@ namespace io
                 io::bus_ptr io_bus,
                 callback_t callback = nullptr);
             /// @brief The acceptor destructor
-            virtual ~acceptor_base_mock();
+            ~acceptor_base_mock() override;
 
         private:
             /// \brief Handle the new client connection event
@@ -41,7 +41,7 @@ namespace io
             /// @param fd The file descriptor
             /// @param mask The I/O event mask
             /// @return The accepted client's address
-            virtual std::pair<io::file_descriptor_t, io::ip::v4> _accept_new_client(io::event_reciever *reciever, io::file_descriptor_t fd, io::flags mask);
+            std::pair<io::file_descriptor_t, io::ip::v4> _accept_new_client(io::event_reciever *reciever, io::file_descriptor_t fd, io::flags mask) override;
         };
     }
 }

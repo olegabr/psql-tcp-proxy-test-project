@@ -106,8 +106,8 @@ Target your browser on the [http://127.0.0.1:8080/io_test_coverage/index.html](h
 ### Build
 
 ```
-sudo cmake .
-sudo make -j
+cmake .
+make -j
 ```
 
 ### Build docs
@@ -121,8 +121,8 @@ make -j doxygen
 ```
 sudo apt install googletest lcov
 cd /usr/src/googletest
-sudo cmake .
-sudo make -j
+cmake .
+make -j
 sudo make install
 ```
 

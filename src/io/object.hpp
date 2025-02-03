@@ -89,7 +89,7 @@ namespace io
 
 	protected:
 		/// @brief Make sure the object is correctly destructed
-		virtual ~input_object();
+		~input_object() override;
 
 	private:
 		/// @brief Read available data asynchronously.
@@ -133,7 +133,7 @@ namespace io
 
 	protected:
 		/// @brief Make sure the object is correctly destructed
-		virtual ~output_object();
+		~output_object() override;
 
 	private:
 		/// @brief Write data asynchronously.
@@ -153,7 +153,7 @@ namespace io
 	{
 	protected:
 		/// @brief Make sure the object is correctly destructed
-		virtual ~io_object();
+		~io_object() override;
 	};
 	/// \brief The async I/O object abstraction smart pointer.
 	using io_object_ptr = std::shared_ptr<io_object>;

@@ -59,7 +59,7 @@ namespace io
 
     protected:
         /// @brief The bus destructor
-        virtual ~bus() noexcept;
+        ~bus() noexcept override;
 
     private:
         /// @brief Listen on the \p fd file descriptor.
@@ -84,7 +84,7 @@ namespace io
         /// \p mask event mask value
         /// @param fd The file descriptor
         /// @param mask The I/O event mask
-        virtual void _enqueue_event(file_descriptor_t fd, io::flags mask);
+        void _enqueue_event(file_descriptor_t fd, io::flags mask) override;
 
     private:
         /// @brief The I/O callbacks container type for fast file descriptor to callbacks lookup

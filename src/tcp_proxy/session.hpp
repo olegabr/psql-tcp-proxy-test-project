@@ -28,7 +28,7 @@ namespace tcp_proxy
             const socket_ptr_t &socket,
             const socket_ptr_t &target_socket);
         /// \brief Destroy the proxy session object
-        virtual ~session();
+        ~session() final;
 
     private:
         /// \brief from client to server channel
