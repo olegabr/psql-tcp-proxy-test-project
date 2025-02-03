@@ -4,24 +4,61 @@ project(tcp_proxy)
 set(CMAKE_CXX_STANDARD 17)
 include_directories(src)
 
-file(GLOB IO_SOURCES ${PROJECT_SOURCE_DIR}/src/io/*.cpp)
+set(IO_SOURCES
+    src/io/acceptor_base.cpp
+    src/io/bus.cpp
+    src/io/endianness.cpp
+    src/io/event_reciever.cpp
+    src/io/server_base.cpp
+    src/io/v4.cpp
+    src/io/acceptor.cpp
+    src/io/channel.cpp
+    src/io/epoll.cpp
+    src/io/flags.cpp
+    src/io/session_base.cpp
+    src/io/addrinfo.cpp
+    src/io/context.cpp
+    src/io/error.cpp
+    src/io/object.cpp
+    src/io/socket.cpp
+)
 add_library( io STATIC ${IO_SOURCES} )
 # target_compile_definitions(io PUBLIC _IO_DEBUG_ENABLED)
 
 set(TCP_PROXY tcp_proxy)
-file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/src/tcp_proxy/*.cpp)
-add_executable(${TCP_PROXY} ${SOURCES})
+set(TCP_PROXY_SOURCES
+    src/echo/main.cpp
+    src/echo/server.cpp
+    src/echo/session.cpp
+)
+add_executable(${TCP_PROXY} ${TCP_PROXY_SOURCES})
 target_link_libraries( ${TCP_PROXY} io )
 # target_compile_definitions(${TCP_PROXY} PUBLIC _IO_DEBUG_ENABLED)
 
 set(ECHO_EXE echo)
-file(GLOB ECHO_SOURCES ${PROJECT_SOURCE_DIR}/src/echo/*.cpp)
+set(ECHO_SOURCES
+    src/echo/main.cpp
+    src/echo/server.cpp
+    src/echo/session.cpp
+)
 add_executable(${ECHO_EXE} ${ECHO_SOURCES})
 target_link_libraries( ${ECHO_EXE} io )
 # target_compile_definitions(${ECHO_EXE} PUBLIC _IO_DEBUG_ENABLED)
 
 set(PSQL_PROXY_EXE psql_proxy)
-file(GLOB PSQL_PROXY_SOURCES ${PROJECT_SOURCE_DIR}/src/psql_proxy/*.cpp ${PROJECT_SOURCE_DIR}/src/psql_proxy/protocol/*.cpp)
+set(PSQL_PROXY_SOURCES
+    src/psql_proxy/endianness.cpp
+    src/psql_proxy/main.cpp
+    src/psql_proxy/query_processor.cpp
+    src/psql_proxy/session.cpp
+    src/psql_proxy/handler.cpp
+    src/psql_proxy/message.cpp
+    src/psql_proxy/server.cpp
+    src/psql_proxy/protocol/parameter_status.cpp
+    src/psql_proxy/protocol/query.cpp
+    src/psql_proxy/protocol/startup_message.cpp
+    src/psql_proxy/protocol/terminate.cpp
+)
 add_executable(${PSQL_PROXY_EXE} ${PSQL_PROXY_SOURCES})
 find_package(Threads REQUIRED)
 target_link_libraries( ${PSQL_PROXY_EXE} io Threads::Threads )
@@ -43,7 +80,33 @@ find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
 set(TEST_EXE io_test)
-file(GLOB TEST_SOURCES ${PROJECT_SOURCE_DIR}/tests/*.cpp ${PROJECT_SOURCE_DIR}/tests/mock/*.cpp)
+set(TEST_SOURCES
+    tests/acceptor_base_test.cpp
+    tests/channel_test.cpp
+    tests/error_test.cpp
+    tests/input_object_test.cpp
+    tests/server_base_test.cpp
+    tests/acceptor_test.cpp
+    tests/context_test.cpp
+    tests/flags_bitwise_and_test.cpp
+    tests/io_object_test.cpp
+    tests/session_base_test.cpp
+    tests/addrinfo_test.cpp
+    tests/endianness_test.cpp
+    tests/flags_bitwise_or_test.cpp
+    tests/object_base_test.cpp
+    tests/socket_test.cpp
+    tests/bus_test.cpp
+    tests/epoll_test.cpp
+    tests/flags_ostream_test.cpp
+    tests/output_object_test.cpp
+    tests/v4_test.cpp
+    tests/mock/acceptor_base_mock.cpp
+    tests/mock/bus_mock.cpp
+    tests/mock/object_mock.cpp
+    tests/mock/server_base_mock.cpp
+    tests/mock/session_base_mock.cpp
+)
 add_executable(${TEST_EXE} ${TEST_SOURCES})
 # target_include_directories(${TEST_EXE} ${GTEST_INCLUDE_DIRS})
 target_link_libraries(
