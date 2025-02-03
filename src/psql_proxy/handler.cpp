@@ -139,9 +139,10 @@ void psql_proxy::handler::operator()(const io::input_object::result_type &result
             {
                 // this code is not used normally
 
+                const auto prev_sz = _buffer.size();
                 _buffer.resize(_buffer.size() + res.buf_len);
                 auto bytes = static_cast<const std::byte *>(res.buf);
-                std::copy(bytes, std::next(bytes, res.buf_len), std::next(_buffer.begin(), _buffer.size()));
+                std::copy(bytes, std::next(bytes, res.buf_len), std::next(_buffer.begin(), prev_sz));
 
                 bool do_continue = false;
                 do
