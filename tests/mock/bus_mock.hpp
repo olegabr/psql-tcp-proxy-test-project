@@ -54,10 +54,10 @@ namespace io
             /// It waits for the \p timeout_msec milliseconds or
             /// while the \p events_buf_size events is read.
             /// The \ref io::bus::_wait_events pure virtual function implementation.
-            /// @param timeout_msec The maximum time to wait for events, in milliseconds. Or -1 for infinit wait.
+            /// @param timeout_msec The maximum time to wait for events, in milliseconds. Or \ref std::chrono::milliseconds{0} for infinit wait.
             /// @param events_buf_size The events buffer size
             /// @param callback The I/O bus async event callback function to be called for each I/O event triggered.
-            void _wait_events(int timeout_msec, std::size_t events_buf_size, io::bus::callback_t callback) override;
+            void _wait_events(std::chrono::milliseconds timeout_msec, std::size_t events_buf_size, io::bus::callback_t callback) override;
 
         private:
             /// \brief The native bus_mock events buffer type.

@@ -19,9 +19,9 @@ namespace io
 	public:
 		/// @brief Construct the I/O reactor pattern object
 		/// @param io_bus The shared pointer for an \ref io::bus object to listen on
-		/// @param timeout_msec The maximum time to wait for events, in milliseconds. Or -1 for infinit wait.
+		/// @param timeout_msec The maximum time to wait for events, in milliseconds. Or \ref std::chrono::milliseconds{0} for infinit wait.
 		/// @param events_buf_size The events buffer size
-		explicit context(const io::bus_ptr &io_bus, int timeout_msec = -1, std::size_t events_buf_size = 1024);
+		explicit context(const io::bus_ptr &io_bus, std::chrono::milliseconds timeout_msec = std::chrono::milliseconds{0}, std::size_t events_buf_size = 1024);
 
 		/// @brief Start the event listening reactor pattern cycle
 		/// @param error_callback The I/O bus async error callback
@@ -52,7 +52,7 @@ namespace io
 		/// @brief True if stop the event listening reactor pattern cycle is requested
 		bool _stop_requested;
 		/// @brief The maximum time to wait for events, in milliseconds
-		int _timeout_msec;
+		std::chrono::milliseconds _timeout_msec;
 		/// @brief The events buffer size
 		std::size_t _events_buf_size;
 	};

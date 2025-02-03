@@ -45,7 +45,7 @@ TEST(channel, in_out_events_processing)
 
     bool error_callback_called = false;
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1,
         [&](io::event_reciever *, const io::error &)
         {
@@ -66,7 +66,7 @@ TEST(channel, error_events_processing)
 
     bool error_callback_called = false;
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1,
         [&](io::event_reciever *, const io::error &)
         {
@@ -89,7 +89,7 @@ TEST(channel, error_read_events_processing)
     bus->enqueue_event(2, io::flags::out);
 
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1);
 }
 
@@ -107,7 +107,7 @@ TEST(channel, error_write_events_processing)
     bus->enqueue_event(2, io::flags::out);
 
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1);
 }
 
@@ -126,7 +126,7 @@ TEST(channel, in_out_events_processing_buffer_full)
 
     bool error_callback_called = false;
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1,
         [&](io::event_reciever *, const io::error &)
         {
@@ -146,10 +146,9 @@ TEST(channel, in_out_events_processing_connection_close)
 
     bus->enqueue_event(1, io::flags::in);
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1,
-        [&](io::event_reciever *, const io::error &) {
-        });
+        [&](io::event_reciever *, const io::error &) {});
 }
 
 TEST(channel, in_out_events_processing_connection_close_EINTR)
@@ -164,10 +163,9 @@ TEST(channel, in_out_events_processing_connection_close_EINTR)
 
     bus->enqueue_event(1, io::flags::in);
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1,
-        [&](io::event_reciever *, const io::error &) {
-        });
+        [&](io::event_reciever *, const io::error &) {});
 }
 
 TEST(channel, in_out_events_processing_connection_close_EAGAIN)
@@ -182,10 +180,9 @@ TEST(channel, in_out_events_processing_connection_close_EAGAIN)
 
     bus->enqueue_event(1, io::flags::in);
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1,
-        [&](io::event_reciever *, const io::error &) {
-        });
+        [&](io::event_reciever *, const io::error &) {});
 }
 
 TEST(channel, in_out_events_processing_connection_close_EINPROGRESS)
@@ -200,10 +197,9 @@ TEST(channel, in_out_events_processing_connection_close_EINPROGRESS)
 
     bus->enqueue_event(1, io::flags::in);
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1,
-        [&](io::event_reciever *, const io::error &) {
-        });
+        [&](io::event_reciever *, const io::error &) {});
 }
 
 TEST(channel, check_data)
@@ -226,7 +222,7 @@ TEST(channel, check_data)
     bus->enqueue_event(1, io::flags::in);
     bus->enqueue_event(2, io::flags::out);
 
-    bus->wait_events(-1, 1);
+    bus->wait_events(std::chrono::milliseconds{0}, 1);
 
     EXPECT_EQ(output_data[0], std::byte{0x0a});
     EXPECT_EQ(output_data[1], std::byte{0x0b});

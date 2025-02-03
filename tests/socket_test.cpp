@@ -109,7 +109,7 @@ TEST(socket, constructor_getters)
 
         bool error_callback_called = false;
         bus->wait_events(
-            -1,
+            std::chrono::milliseconds{0},
             1,
             [&](io::event_reciever *, const io::error &error)
             {
@@ -121,7 +121,7 @@ TEST(socket, constructor_getters)
 
         bool error_callback_called2 = false;
         bus->wait_events(
-            -1,
+            std::chrono::milliseconds{0},
             1,
             [&](io::event_reciever *, const io::error &error)
             {
@@ -136,7 +136,7 @@ TEST(socket, constructor_getters)
 
         bool error_callback_called3 = false;
         bus->wait_events(
-            100, // msec
+            std::chrono::milliseconds{100},
             1,
             [&](io::event_reciever *, const io::error &error)
             {

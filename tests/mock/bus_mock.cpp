@@ -44,7 +44,7 @@ void io::test::bus_mock::_del_fd(io::file_descriptor_t fd)
     _file_descriptors.erase(fd);
 }
 
-void io::test::bus_mock::_wait_events(int timeout_msec, std::size_t events_buf_size, io::bus::callback_t callback)
+void io::test::bus_mock::_wait_events(std::chrono::milliseconds timeout_msec, std::size_t events_buf_size, io::bus::callback_t callback)
 {
     if (_do_throw_io_error)
     {

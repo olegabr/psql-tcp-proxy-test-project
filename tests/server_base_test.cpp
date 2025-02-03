@@ -21,7 +21,7 @@ TEST(server_base, session_create)
     // imitate new client connection
     bus->enqueue_event(1, io::flags::in);
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1);
 
     auto sess = server.get_latest_session();

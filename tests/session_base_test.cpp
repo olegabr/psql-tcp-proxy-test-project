@@ -22,6 +22,6 @@ TEST(session_base, getters_start)
 
     bus->enqueue_event(1, io::flags::error);
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1);
 }

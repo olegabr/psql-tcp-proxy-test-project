@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
                       << std::endl;
         };
 
-        io_context = std::make_shared<io::context>(io_bus, 10 /*msec*/);
+        io_context = std::make_shared<io::context>(io_bus, std::chrono::milliseconds{10});
         io_context->run(error_handler);
 
         std::cout << "echo service finish" << std::endl;

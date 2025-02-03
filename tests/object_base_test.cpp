@@ -34,7 +34,7 @@ TEST(object_base, add_bus_callback)
 
     bool error_callback_called = false;
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1,
         [&](io::event_reciever *, const io::error &)
         {
@@ -62,7 +62,7 @@ TEST(object_base, del_bus_fd_callbacks)
 
     bool error_callback_called = false;
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1,
         [&](io::event_reciever *, const io::error &)
         {
@@ -90,7 +90,7 @@ TEST(object_base, del_bus_fd)
 
     bool error_callback_called = false;
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1,
         [&](io::event_reciever *, const io::error &)
         {

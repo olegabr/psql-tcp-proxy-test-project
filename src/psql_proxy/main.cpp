@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
         const io::ip::v4 target_address(target_host, target_port);
         const uint32_t tcp_backlog = 1024;
 
-        io_context = std::make_shared<io::context>(io_bus, 10 /*msec*/);
+        io_context = std::make_shared<io::context>(io_bus, std::chrono::milliseconds{10});
 
         psql_proxy::query_processor qp(
             std::ofstream(query_log_path, std::ios::trunc));

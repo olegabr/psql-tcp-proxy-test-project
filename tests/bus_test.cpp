@@ -27,7 +27,7 @@ TEST(bus, add_fd)
 
     bool error_callback_called = false;
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1,
         [&](io::event_reciever *, const io::error &)
         {
@@ -57,7 +57,7 @@ TEST(bus, del_fd)
 
     bool error_callback_called = false;
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1,
         [&](io::event_reciever *, const io::error &)
         {
@@ -87,7 +87,7 @@ TEST(bus, del_fd_callbacks)
 
     bool error_callback_called = false;
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1,
         [&](io::event_reciever *, const io::error &)
         {
@@ -128,7 +128,7 @@ TEST(bus, two_fds)
 
     bool error_callback_called = false;
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1,
         [&](io::event_reciever *, const io::error &)
         {
@@ -156,7 +156,7 @@ TEST(bus, error_event)
 
     bool error_callback_called = false;
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1,
         [&](io::event_reciever *, const io::error &)
         {
@@ -185,7 +185,7 @@ TEST(bus, io_error_callback)
 
     bool error_callback_called = false;
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1,
         [&](io::event_reciever *reciever, const io::error &err)
         {
@@ -218,7 +218,7 @@ TEST(bus, std_exception_callback)
     bool error_callback_called = false;
     errno = 0;
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1,
         [&](io::event_reciever *reciever, const io::error &err)
         {
@@ -251,7 +251,7 @@ TEST(bus, unknown_exception_callback)
     bool error_callback_called = false;
     errno = 0;
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1,
         [&](io::event_reciever *reciever, const io::error &err)
         {
@@ -286,7 +286,7 @@ TEST(bus, global_io_error_callback)
 
     bool error_callback_called = false;
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1,
         [&](io::event_reciever *reciever, const io::error &err)
         {
@@ -320,7 +320,7 @@ TEST(bus, global_std_exception_callback)
     bool error_callback_called = false;
     errno = 0;
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1,
         [&](io::event_reciever *reciever, const io::error &err)
         {
@@ -354,7 +354,7 @@ TEST(bus, global_unknown_exception_callback)
     bool error_callback_called = false;
     errno = 0;
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1,
         [&](io::event_reciever *reciever, const io::error &err)
         {

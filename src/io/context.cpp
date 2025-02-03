@@ -6,7 +6,7 @@
 
 io::context::context(
     const io::bus_ptr &io_bus,
-    int timeout_ms,
+    std::chrono::milliseconds timeout_ms,
     std::size_t min_buf_size)
     : _io_bus(io_bus),
       _stop_requested(false),

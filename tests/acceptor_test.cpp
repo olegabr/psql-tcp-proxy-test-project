@@ -30,7 +30,7 @@ TEST(acceptor, constructor)
 
     bool error_callback_called = false;
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1,
         [&](io::event_reciever *, const io::error &)
         {
@@ -42,7 +42,7 @@ TEST(acceptor, constructor)
 
     error_callback_called = false;
     bus->wait_events(
-        -1,
+        std::chrono::milliseconds{0},
         1,
         [&](io::event_reciever *, const io::error &)
         {

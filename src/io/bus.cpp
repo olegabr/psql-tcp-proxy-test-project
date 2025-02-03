@@ -41,7 +41,7 @@ void io::bus::del_fd(file_descriptor_t fd)
     _del_fd(fd);
 }
 
-void io::bus::wait_events(int timeout_msec, std::size_t events_buf_size, io::bus::error_callback_t error_callback)
+void io::bus::wait_events(std::chrono::milliseconds timeout_msec, std::size_t events_buf_size, io::bus::error_callback_t error_callback)
 {
     auto cb = [this, error_callback](event_reciever *reciever, file_descriptor_t fd, flags mask)
     {

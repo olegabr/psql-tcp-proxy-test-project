@@ -82,12 +82,12 @@ namespace
     }
 }
 
-void io::system::epoll::_wait_events(int timeout_msec, std::size_t events_buf_size, io::bus::callback_t callback)
+void io::system::epoll::_wait_events(std::chrono::milliseconds timeout_msec, std::size_t events_buf_size, io::bus::callback_t callback)
 {
     _events_buff.resize(events_buf_size);
 
     errno = 0;
-    const int ret = ::epoll_wait(_epfd, _events_buff.data(), _events_buff.size(), timeout_msec);
+    const int ret = ::epoll_wait(_epfd, _events_buff.data(), _events_buff.size(), timeout_msec.count());
     if (-1 == ret)
     {
         _events_buff.resize(0);

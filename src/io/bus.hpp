@@ -16,6 +16,7 @@
 #include <unordered_set>
 #include <memory>
 #include <queue>
+#include <chrono>
 
 /// \brief The input/output library namespace
 namespace io
@@ -52,10 +53,10 @@ namespace io
         /// @brief Wait for I/O events on this bus object.
         /// It waits for the \p timeout_msec milliseconds or
         /// while the \p events_buf_size events is read.
-        /// @param timeout_msec The maximum time to wait for events, in milliseconds. Or -1 for infinit wait.
+        /// @param timeout_msec The maximum time to wait for events, in milliseconds. Or \ref std::chrono::milliseconds{0} for infinit wait.
         /// @param events_buf_size The events buffer size
         /// @param error_callback The function to be called in a case of an I/O error occured.
-        void wait_events(int timeout_msec, std::size_t events_buf_size, error_callback_t error_callback = nullptr);
+        void wait_events(std::chrono::milliseconds timeout_msec, std::size_t events_buf_size, error_callback_t error_callback = nullptr);
 
     protected:
         /// @brief The bus destructor
@@ -74,10 +75,10 @@ namespace io
         /// It waits for the \p timeout_msec milliseconds or
         /// while the \p events_buf_size events is read.
         /// Pure virtual function. Implement it in the inherited concrete bus class.
-        /// @param timeout_msec The maximum time to wait for events, in milliseconds. Or -1 for infinit wait.
+        /// @param timeout_msec The maximum time to wait for events, in milliseconds. Or \ref std::chrono::milliseconds{0} for infinit wait.
         /// @param events_buf_size The events buffer size
         /// @param callback The I/O bus async event callback function to be called for each I/O event triggered.
-        virtual void _wait_events(int timeout_msec, std::size_t events_buf_size, callback_t callback) = 0;
+        virtual void _wait_events(std::chrono::milliseconds timeout_msec, std::size_t events_buf_size, callback_t callback) = 0;
 
     private:
         /// @brief Enqueue event on the \p fd file descriptor with the
