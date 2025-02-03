@@ -9,7 +9,7 @@ set(IO_SOURCES
     src/io/bus.cpp
     src/io/endianness.cpp
     src/io/event_reciever.cpp
-    src/io/server_base.cpp
+    src/io/session_manager.cpp
     src/io/v4.cpp
     src/io/acceptor.cpp
     src/io/channel.cpp
@@ -85,7 +85,7 @@ set(TEST_SOURCES
     tests/channel_test.cpp
     tests/error_test.cpp
     tests/input_object_test.cpp
-    tests/server_base_test.cpp
+    tests/session_manager_test.cpp
     tests/acceptor_test.cpp
     tests/context_test.cpp
     tests/flags_bitwise_and_test.cpp
@@ -104,7 +104,7 @@ set(TEST_SOURCES
     tests/mock/acceptor_base_mock.cpp
     tests/mock/bus_mock.cpp
     tests/mock/object_mock.cpp
-    tests/mock/server_base_mock.cpp
+    tests/mock/session_manager_mock.cpp
     tests/mock/session_base_mock.cpp
 )
 add_executable(${TEST_EXE} ${TEST_SOURCES})

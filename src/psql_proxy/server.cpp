@@ -20,7 +20,7 @@ psql_proxy::server::server(
 	const io::ip::v4 &target_address,
 	int tcp_backlog,
 	query_processor *qp)
-	: _server_base(
+	: _session_manager(
 		  std::make_shared<io::ip::tcp::acceptor>(io_bus, address, tcp_backlog),
 		  [this](io::file_descriptor_t fd, const io::ip::v4 &address) -> io::ip::tcp::session_base_ptr
 		  {
@@ -36,7 +36,7 @@ psql_proxy::server::server(
 io::ip::tcp::session_base_ptr psql_proxy::server::_make_new_session(io::file_descriptor_t fd, const io::ip::v4 &address)
 {
 	std::cout << "[+] Got connection from: " << address << " --> fd: " << fd << "\n";
-	auto from = std::make_shared<socket_t>(_server_base.get_acceptor()->get_bus(), fd);
-	auto to = std::make_shared<socket_t>(_server_base.get_acceptor()->get_bus(), _target_address);
+	auto from = std::make_shared<socket_t>(_session_manager.get_acceptor()->get_bus(), fd);
+	auto to = std::make_shared<socket_t>(_session_manager.get_acceptor()->get_bus(), _target_address);
 	return std::make_shared<psql_proxy::session>(from, to, _query_processor);
 }

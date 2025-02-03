@@ -2,8 +2,8 @@
 /// @author Oleg Abrosimov <olegabrosimovnsk@gmail.com>
 /// @copyright MIT
 
-#ifndef H_IO_IP_TCP_SERVER_BASE_T
-#define H_IO_IP_TCP_SERVER_BASE_T
+#ifndef H_IO_IP_TCP_session_manager_T
+#define H_IO_IP_TCP_session_manager_T
 
 #include "fd.hpp"
 #include "session_base.hpp"
@@ -22,7 +22,7 @@ namespace io
         namespace tcp
         {
             /// \brief The server base class for a TCP service
-            class server_base final
+            class session_manager final
             {
             public:
                 /// \brief The function to create new \ref io::ip::tcp::session_base object for the \p fd
@@ -40,20 +40,20 @@ namespace io
 
                 /// \brief Construct the server base class for a TCP service
                 /// \param tcp_acceptor The socket acceptor
-                explicit server_base(const acceptor_ptr &tcp_acceptor, const make_new_session_callback_t &make_new_session_callback);
+                explicit session_manager(const acceptor_ptr &tcp_acceptor, const make_new_session_callback_t &make_new_session_callback);
                 /// \brief Destruct the server base class for a TCP service
-                ~server_base() noexcept;
+                ~session_manager() noexcept;
 
             protected:
                 /// \brief Server copying is prohibited
-                server_base(const server_base &) = delete;
+                session_manager(const session_manager &) = delete;
                 /// \brief Server copying is prohibited
-                server_base &operator=(const server_base &) = delete;
+                session_manager &operator=(const session_manager &) = delete;
 
                 /// \brief Server moving is prohibited
-                server_base(server_base &&) noexcept = delete;
+                session_manager(session_manager &&) noexcept = delete;
                 /// \brief Server moving is prohibited
-                server_base &operator=(server_base &&) noexcept = delete;
+                session_manager &operator=(session_manager &&) noexcept = delete;
 
             private:
                 /// \brief The socket acceptor
@@ -63,4 +63,4 @@ namespace io
         }
     }
 }
-#endif // H_IO_IP_TCP_SERVER_BASE_T
+#endif // H_IO_IP_TCP_session_manager_T

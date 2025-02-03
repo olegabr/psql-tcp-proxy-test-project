@@ -2,15 +2,15 @@
 /// @author Oleg Abrosimov <olegabrosimovnsk@gmail.com>
 /// @copyright MIT
 
-#ifndef H_IO_TEST_SERVER_BASE_MOCK_T
-#define H_IO_TEST_SERVER_BASE_MOCK_T
+#ifndef H_IO_TEST_session_manager_MOCK_T
+#define H_IO_TEST_session_manager_MOCK_T
 
 #include "session_base_mock.hpp"
 
 #include <io/fd.hpp>
 #include <io/v4.hpp>
 #include <io/bus.hpp>
-#include <io/server_base.hpp>
+#include <io/session_manager.hpp>
 
 /// \brief The input/output library namespace
 namespace io
@@ -19,18 +19,18 @@ namespace io
     namespace test
     {
         /// \brief The server for the TCP echo service
-        class server_base_mock
+        class session_manager_mock
         {
         public:
             /// \brief Create the server for the TCP echo service
             /// \param io_bus The \ref io::bus object instance to connect to the system level I/O
-            explicit server_base_mock(io::bus_ptr io_bus);
+            explicit session_manager_mock(io::bus_ptr io_bus);
 
             /// \brief Get the socket acceptor
             /// \return The socket acceptor
             io::ip::acceptor_ptr get_acceptor()
             {
-                return _server_base.get_acceptor();
+                return _session_manager.get_acceptor();
             }
 
             io::ip::tcp::session_base_ptr get_latest_session();
@@ -44,10 +44,10 @@ namespace io
 
         private:
             /// \brief The server base class for a TCP service
-            io::ip::tcp::server_base _server_base;
+            io::ip::tcp::session_manager _session_manager;
 
             io::ip::tcp::session_base_ptr _latest_session;
         };
     }
 }
-#endif // H_IO_TEST_SERVER_BASE_MOCK_T
+#endif // H_IO_TEST_session_manager_MOCK_T

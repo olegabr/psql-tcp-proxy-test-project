@@ -55,7 +55,7 @@ And the [io::ip::tcp::socket](./src/io/socket.hpp) object is used for async I/O.
 
 The [io::channel](./src/io/channel.hpp) class implements a `Pipe` pattern to read data from one socket and write it to another one.
 
-The [io::ip::tcp::server_base](./src/io/server_base.hpp) and [io::ip::tcp::session_base](./src/io/session_base.hpp) classes are auxiliary base classes to simplify actual server code implementation.
+The [io::ip::tcp::session_manager](./src/io/session_manager.hpp) and [io::ip::tcp::session_base](./src/io/session_base.hpp) classes are auxiliary base classes to simplify actual server code implementation.
 
 Check the [./src/echo](./src/echo/main.cpp) and [./src/tcp_proxy](./src/tcp_proxy/main.cpp) examples to see it in action.
 

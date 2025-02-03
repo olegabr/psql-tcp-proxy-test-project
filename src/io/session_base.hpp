@@ -21,7 +21,7 @@ namespace io
         namespace tcp
         {
             /// \brief The server base class for a TCP service
-            class server_base;
+            class session_manager;
 
             /// \brief The session base class for a TCP service
             class session_base
@@ -55,7 +55,7 @@ namespace io
                 virtual ~session_base() noexcept;
 
             protected:
-                friend class server_base;
+                friend class session_manager;
                 /// \brief Start the session: initialize \ref io::bus callbacks.
                 // Can not do it in constructor because of the \ref std::enable_shared_from_this limitations
                 void start();

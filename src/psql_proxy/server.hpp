@@ -13,7 +13,7 @@
 #include <io/bus.hpp>
 #include <io/acceptor.hpp>
 #include <io/bipartite_buf.hpp>
-#include <io/server_base.hpp>
+#include <io/session_manager.hpp>
 
 #include <cstddef>
 #include <memory>
@@ -49,7 +49,7 @@ namespace psql_proxy
 
 	private:
 		/// \brief The server base class for a TCP service
-		io::ip::tcp::server_base _server_base;
+		io::ip::tcp::session_manager _session_manager;
 		/// \brief The target address
 		io::ip::v4 _target_address;
 		/// \brief The PostgreSQL messages interpreter object

@@ -10,7 +10,7 @@
 #include <io/fd.hpp>
 #include <io/v4.hpp>
 #include <io/bus.hpp>
-#include <io/server_base.hpp>
+#include <io/session_manager.hpp>
 
 #include <cstddef>
 #include <memory>
@@ -41,7 +41,7 @@ namespace echo
 
 	private:
 		/// \brief The server base class for a TCP service
-		io::ip::tcp::server_base _server_base;
+		io::ip::tcp::session_manager _session_manager;
 	};
 }
 
