@@ -20,7 +20,7 @@ namespace io
         namespace system
         {
             class addrinfo_t;
-            void swap(addrinfo_t &&, addrinfo_t &&);
+            void swap(addrinfo_t &, addrinfo_t &);
 
             /// \brief Wrapper around the addrinfo struct
             /// Used to optimize new connection socket creation
@@ -40,7 +40,7 @@ namespace io
                 /// \brief Resource wrappers can be moved
                 addrinfo_t &operator=(addrinfo_t &&) noexcept;
                 /// \brief Resource wrappers can be swapped
-                friend void swap(addrinfo_t &&, addrinfo_t &&);
+                friend void swap(addrinfo_t &, addrinfo_t &);
 
                 /// \brief The Constant iterator wrapper to enumerate addrinfo structures
                 class const_iterator

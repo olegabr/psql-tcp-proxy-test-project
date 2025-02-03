@@ -16,7 +16,7 @@ namespace io
 	namespace ip
 	{
 		class v4;
-		void swap(v4 &&lh, v4 &&rh);
+		void swap(v4 &lh, v4 &rh) noexcept;
 		std::ostream &operator<<(std::ostream &os, const v4 &address);
 
 		/// @brief The IPv4 address wrapper
@@ -34,15 +34,15 @@ namespace io
 			/// @brief Copy construct by assignment
 			/// @param other The \ref io::ip::v4 object to copy construct from
 			/// @return This object
-			v4 &operator=(const v4 &other) = default;
+			// v4 &operator=(const v4 &other) = default;
 
 			/// @brief Move constructor
 			/// @param other The \ref io::ip::v4 object to move construct from
 			v4(v4 &&other) noexcept;
-			/// @brief Move construct by assignment
+			/// @brief Copy/Move construct by assignment
 			/// @param other The \ref io::ip::v4 object to move construct from
 			/// @return This object
-			v4 &operator=(v4 &&other) noexcept;
+			v4 &operator=(v4 other) noexcept;
 
 			/// @brief Get the host string for this address
 			/// @return The host string for this address
@@ -62,7 +62,7 @@ namespace io
 			/// @brief Swap two \ref io::ip::v4 objects
 			/// @param lh Left object to swap
 			/// @param rh Right object to swap
-			friend void swap(v4 &&lh, v4 &&rh);
+			friend void swap(v4 &lh, v4 &rh) noexcept;
 
 			/// @brief The std::ostream output operator overload
 			/// to output the \p address in a human readable format.

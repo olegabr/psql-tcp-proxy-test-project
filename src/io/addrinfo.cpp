@@ -33,7 +33,7 @@ io::ip::system::addrinfo_t::~addrinfo_t() noexcept
     }
 }
 
-void io::ip::system::swap(io::ip::system::addrinfo_t &&lh, io::ip::system::addrinfo_t &&rh)
+void io::ip::system::swap(io::ip::system::addrinfo_t &lh, io::ip::system::addrinfo_t &rh)
 {
     using std::swap;
     swap(lh._addrinfo, rh._addrinfo);
@@ -46,13 +46,7 @@ io::ip::system::addrinfo_t::addrinfo_t(io::ip::system::addrinfo_t &&other) noexc
 
 io::ip::system::addrinfo_t &io::ip::system::addrinfo_t::operator=(io::ip::system::addrinfo_t &&other) noexcept
 {
-    if (&other == this)
-    {
-        // self assign protection
-        return *this;
-    }
     io::ip::system::addrinfo_t temp{std::move(other)};
-    using std::swap;
-    swap(std::move(*this), std::move(temp));
+    swap(*this, temp);
     return *this;
 }
