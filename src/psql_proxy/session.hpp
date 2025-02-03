@@ -17,7 +17,7 @@
 /// @brief The PostgreSQL Proxy service namespace
 namespace psql_proxy
 {
-    class session
+    class session final
         : public io::ip::tcp::session_base
     {
     public:

@@ -14,7 +14,7 @@
 namespace tcp_proxy
 {
     /// \brief The session for the TCP proxy service
-    class session
+    class session final
         : public io::ip::tcp::session_base
     {
     public:

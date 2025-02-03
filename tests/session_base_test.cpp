@@ -18,7 +18,7 @@ TEST(session_base, getters_start)
     EXPECT_EQ(sess->get_file_descriptors().size(), 1);
     EXPECT_EQ(sess->get_file_descriptors().front(), 1);
 
-    sess->start();
+    sess->base_start();
 
     bus->enqueue_event(1, io::flags::error);
     bus->wait_events(

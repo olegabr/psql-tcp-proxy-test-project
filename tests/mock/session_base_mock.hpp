@@ -24,6 +24,8 @@ namespace io
             session_base_mock(const io::bus_ptr &bus, io::file_descriptors_vec_t fds);
             /// \brief Destruct the session base class for a TCP service
             ~session_base_mock() noexcept override;
+
+            void base_start();
         };
     }
 }

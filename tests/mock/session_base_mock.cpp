@@ -12,3 +12,8 @@ io::test::session_base_mock::session_base_mock(const io::bus_ptr &bus, io::file_
 io::test::session_base_mock::~session_base_mock() noexcept
 {
 }
+
+void io::test::session_base_mock::base_start()
+{
+    start();
+}

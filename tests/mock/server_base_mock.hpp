@@ -20,12 +20,18 @@ namespace io
     {
         /// \brief The server for the TCP echo service
         class server_base_mock
-            : public io::ip::tcp::server_base
         {
         public:
             /// \brief Create the server for the TCP echo service
             /// \param io_bus The \ref io::bus object instance to connect to the system level I/O
             explicit server_base_mock(io::bus_ptr io_bus);
+
+            /// \brief Get the socket acceptor
+            /// \return The socket acceptor
+            io::ip::acceptor_ptr get_acceptor()
+            {
+                return _server_base.get_acceptor();
+            }
 
             io::ip::tcp::session_base_ptr get_latest_session();
 
@@ -34,9 +40,12 @@ namespace io
             /// \param fd The new client connection file descriptor
             /// \param address The new client connection address
             /// \return The \ref io::ip::tcp::session_base derived object for the newly created session
-            io::ip::tcp::session_base_ptr _make_new_session(io::file_descriptor_t fd, const io::ip::v4 &address) override;
+            io::ip::tcp::session_base_ptr _make_new_session(io::file_descriptor_t fd, const io::ip::v4 &address);
 
         private:
+            /// \brief The server base class for a TCP service
+            io::ip::tcp::server_base _server_base;
+
             io::ip::tcp::session_base_ptr _latest_session;
         };
     }

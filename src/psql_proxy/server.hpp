@@ -24,8 +24,7 @@
 namespace psql_proxy
 {
 	/// \brief The server for the PostgreSQL Proxy service
-	class server
-		: public io::ip::tcp::server_base
+	class server final
 	{
 	public:
 		/// \brief Create the server for the TCP proxy service
@@ -46,9 +45,11 @@ namespace psql_proxy
 		/// \param fd The new client connection file descriptor
 		/// \param address The new client connection address
 		/// \return The \ref io::ip::tcp::session_base derived object for the newly created session
-		io::ip::tcp::session_base_ptr _make_new_session(io::file_descriptor_t fd, const io::ip::v4 &address) final;
+		io::ip::tcp::session_base_ptr _make_new_session(io::file_descriptor_t fd, const io::ip::v4 &address);
 
 	private:
+		/// \brief The server base class for a TCP service
+		io::ip::tcp::server_base _server_base;
 		/// \brief The target address
 		io::ip::v4 _target_address;
 		/// \brief The PostgreSQL messages interpreter object

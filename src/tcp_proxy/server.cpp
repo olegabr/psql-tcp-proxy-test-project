@@ -18,7 +18,12 @@ tcp_proxy::server::server(
 	const io::ip::v4 &address,
 	const io::ip::v4 &target_address,
 	int tcp_backlog)
-	: io::ip::tcp::server_base(std::make_shared<io::ip::tcp::acceptor>(io_bus, address, tcp_backlog)),
+	: _server_base(
+		  std::make_shared<io::ip::tcp::acceptor>(io_bus, address, tcp_backlog),
+		  [this](io::file_descriptor_t fd, const io::ip::v4 &address) -> io::ip::tcp::session_base_ptr
+		  {
+			  return _make_new_session(fd, address);
+		  }),
 	  _target_address(target_address)
 {
 	std::cout << "[+] Listening on " << address << std::endl;
@@ -28,7 +33,7 @@ tcp_proxy::server::server(
 io::ip::tcp::session_base_ptr tcp_proxy::server::_make_new_session(io::file_descriptor_t fd, const io::ip::v4 &address)
 {
 	std::cout << "[+] Got connection from: " << address << " --> fd: " << fd << "\n";
-	auto from = std::make_shared<socket_t>(get_acceptor()->get_bus(), fd);
-	auto to = std::make_shared<socket_t>(get_acceptor()->get_bus(), _target_address);
+	auto from = std::make_shared<socket_t>(_server_base.get_acceptor()->get_bus(), fd);
+	auto to = std::make_shared<socket_t>(_server_base.get_acceptor()->get_bus(), _target_address);
 	return std::make_shared<tcp_proxy::session>(from, to);
 }

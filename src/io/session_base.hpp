@@ -20,15 +20,14 @@ namespace io
         /// \brief The TCP protocol related abstractions namespace
         namespace tcp
         {
+            /// \brief The server base class for a TCP service
+            class server_base;
+
             /// \brief The session base class for a TCP service
             class session_base
                 : public std::enable_shared_from_this<session_base>
             {
             public:
-                /// \brief Start the session: initialize \ref io::bus callbacks.
-                // Can not do it in constructor because of the \ref std::enable_shared_from_this limitations
-                void start();
-
                 /// \brief Get file descriptors related to this session
                 /// \return File descriptors related to this session
                 const io::file_descriptors_vec_t &get_file_descriptors() const
@@ -54,6 +53,12 @@ namespace io
                 session_base(const io::bus_ptr &bus, io::file_descriptors_vec_t fds);
                 /// \brief Destruct the session base class for a TCP service
                 virtual ~session_base() noexcept;
+
+            protected:
+                friend class server_base;
+                /// \brief Start the session: initialize \ref io::bus callbacks.
+                // Can not do it in constructor because of the \ref std::enable_shared_from_this limitations
+                void start();
 
             private:
                 /// \brief The \ref io::bus object instance to connect to the system level I/O
