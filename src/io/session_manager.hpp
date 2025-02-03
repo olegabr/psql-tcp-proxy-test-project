@@ -21,7 +21,7 @@ namespace io
         /// \brief The TCP protocol related abstractions namespace
         namespace tcp
         {
-            /// \brief The server base class for a TCP service
+            /// \brief The TCP server class to manage new TCP sessions creation
             class session_manager final
             {
             public:
@@ -38,10 +38,10 @@ namespace io
                     return _tcp_acceptor;
                 }
 
-                /// \brief Construct the server base class for a TCP service
+                /// \brief Construct the TCP server class to manage new TCP sessions creation
                 /// \param tcp_acceptor The socket acceptor
                 explicit session_manager(const acceptor_ptr &tcp_acceptor, const make_new_session_callback_t &make_new_session_callback);
-                /// \brief Destruct the server base class for a TCP service
+                /// \brief Destruct the TCP server class to manage new TCP sessions creation
                 ~session_manager() noexcept;
 
             protected:

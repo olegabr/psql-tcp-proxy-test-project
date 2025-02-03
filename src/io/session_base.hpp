@@ -20,7 +20,7 @@ namespace io
         /// \brief The TCP protocol related abstractions namespace
         namespace tcp
         {
-            /// \brief The server base class for a TCP service
+            /// \brief The TCP server class to manage new TCP sessions creation
             class session_manager;
 
             /// \brief The session base class for a TCP service

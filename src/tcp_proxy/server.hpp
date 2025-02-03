@@ -42,7 +42,7 @@ namespace tcp_proxy
 		io::ip::tcp::session_base_ptr _make_new_session(io::file_descriptor_t fd, const io::ip::v4 &address);
 
 	private:
-		/// \brief The server base class for a TCP service
+		/// \brief The TCP server class to manage new TCP sessions creation
 		io::ip::tcp::session_manager _session_manager;
 		/// \brief The target address
 		io::ip::v4 _target_address;
