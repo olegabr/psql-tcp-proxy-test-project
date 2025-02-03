@@ -31,7 +31,7 @@ void io::object_base::del_bus_fd()
 }
 
 // LCOV_EXCL_START
-io::object_base::~object_base() {}
+io::object_base::~object_base() noexcept {}
 // LCOV_EXCL_STOP
 
 io::input_object::result_type io::input_object::async_read_some(value_t *buf, std::size_t buf_len)
@@ -40,7 +40,7 @@ io::input_object::result_type io::input_object::async_read_some(value_t *buf, st
 }
 
 // LCOV_EXCL_START
-io::input_object::~input_object() {}
+io::input_object::~input_object() noexcept {}
 // LCOV_EXCL_STOP
 
 io::output_object::result_type io::output_object::async_write_some(const value_t *buf, std::size_t buf_len)
@@ -49,9 +49,9 @@ io::output_object::result_type io::output_object::async_write_some(const value_t
 }
 
 // LCOV_EXCL_START
-io::output_object::~output_object() {}
+io::output_object::~output_object() noexcept {}
 // LCOV_EXCL_STOP
 
 // LCOV_EXCL_START
-io::io_object::~io_object() {}
+io::io_object::~io_object() noexcept {}
 // LCOV_EXCL_STOP

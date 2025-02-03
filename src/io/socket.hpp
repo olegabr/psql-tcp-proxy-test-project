@@ -44,7 +44,7 @@ namespace io
 					const io::ip::v4 &address);
 
 				/// @brief Make sure the object is correctly destructed
-				~socket() override;
+				~socket() noexcept override;
 
 				/// \brief copy is prohibited
 				socket(const socket &) = delete;

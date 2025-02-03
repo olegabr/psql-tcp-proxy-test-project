@@ -39,7 +39,7 @@ namespace io
             /// @param fd The already opened socket file descriptor
             explicit acceptor_base(const io::bus_ptr &io_bus, io::file_descriptor_t fd);
             /// @brief The acceptor destructor
-            ~acceptor_base() override;
+            ~acceptor_base() noexcept override;
 
             /// @brief remove file descriptor from \ref io::bus
             void _close();

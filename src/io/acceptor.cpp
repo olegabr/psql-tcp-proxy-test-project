@@ -145,7 +145,7 @@ io::ip::tcp::acceptor::acceptor(
 }
 
 // LCOV_EXCL_START
-io::ip::tcp::acceptor::~acceptor()
+io::ip::tcp::acceptor::~acceptor() noexcept
 {
 	try
 	{
@@ -153,6 +153,10 @@ io::ip::tcp::acceptor::~acceptor()
 		_close();
 		::shutdown(fd, SHUT_RDWR);
 		::close(fd);
+	}
+	catch (io::error &ex)
+	{
+		std::cerr << ex.what() << "; errno = " << ex.get_errno() << "; for fd = " << ex.get_fd() << '\n';
 	}
 	catch (std::exception &e)
 	{

@@ -23,18 +23,11 @@ namespace io
         /// \p mask event mask value
         /// @param fd The file descriptor
         /// @param mask The I/O event mask
-        void enqueue_event(file_descriptor_t fd, io::flags mask)
-        {
-            _enqueue_event(fd, mask);
-        }
+        void enqueue_event(file_descriptor_t fd, io::flags mask);
 
     protected:
-        // LCOV_EXCL_START
-
         /// @brief The event_reciever destructor
-        virtual ~event_reciever() {}
-
-        // LCOV_EXCL_STOP
+        virtual ~event_reciever() noexcept;
 
     private:
         /// @brief Enqueue event on the \p fd file descriptor with the

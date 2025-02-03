@@ -33,7 +33,7 @@ namespace io
                 io::bus_ptr io_bus,
                 callback_t callback = nullptr);
             /// @brief The acceptor destructor
-            ~acceptor_base_mock() override;
+            ~acceptor_base_mock() noexcept override;
 
         private:
             /// \brief Handle the new client connection event

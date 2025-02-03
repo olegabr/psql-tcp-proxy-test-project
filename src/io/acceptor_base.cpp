@@ -4,6 +4,7 @@
 
 #include "acceptor_base.hpp"
 #include "v4.hpp"
+#include "error.hpp"
 
 #include <algorithm>
 #include <iostream>
@@ -37,11 +38,15 @@ const io::bus_ptr &io::ip::acceptor_base::_get_bus()
 }
 
 // LCOV_EXCL_START
-io::ip::acceptor_base::~acceptor_base()
+io::ip::acceptor_base::~acceptor_base() noexcept
 {
     try
     {
         _close();
+    }
+    catch (io::error &ex)
+    {
+        std::cerr << ex.what() << "; errno = " << ex.get_errno() << "; for fd = " << ex.get_fd() << '\n';
     }
     catch (std::exception &e)
     {

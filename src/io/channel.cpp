@@ -33,7 +33,7 @@ void io::channel::_start()
 }
 
 // LCOV_EXCL_START
-io::channel::~channel()
+io::channel::~channel() noexcept
 {
     IO_DEBUG((std::cout << "~channel: from object id = " << _left->get_fd() << " to object id = " << _right->get_fd() << std::endl));
 }

@@ -45,7 +45,7 @@ namespace io
 
 	protected:
 		/// @brief Make sure the object is correctly destructed
-		virtual ~object_base();
+		virtual ~object_base() noexcept;
 
 	private:
 		/// @brief Get the underlying file descriptor value for this I/O object
@@ -89,7 +89,7 @@ namespace io
 
 	protected:
 		/// @brief Make sure the object is correctly destructed
-		~input_object() override;
+		~input_object() noexcept override;
 
 	private:
 		/// @brief Read available data asynchronously.
@@ -133,7 +133,7 @@ namespace io
 
 	protected:
 		/// @brief Make sure the object is correctly destructed
-		~output_object() override;
+		~output_object() noexcept override;
 
 	private:
 		/// @brief Write data asynchronously.
@@ -153,7 +153,7 @@ namespace io
 	{
 	protected:
 		/// @brief Make sure the object is correctly destructed
-		~io_object() override;
+		~io_object() noexcept override;
 	};
 	/// \brief The async I/O object abstraction smart pointer.
 	using io_object_ptr = std::shared_ptr<io_object>;

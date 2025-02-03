@@ -12,7 +12,7 @@ io::test::acceptor_base_mock::acceptor_base_mock(
     add_callback(callback);
 }
 
-io::test::acceptor_base_mock::~acceptor_base_mock()
+io::test::acceptor_base_mock::~acceptor_base_mock() noexcept
 {
 }
 

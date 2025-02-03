@@ -66,7 +66,7 @@ io::ip::tcp::socket::socket(
 }
 
 // LCOV_EXCL_START
-io::ip::tcp::socket::~socket()
+io::ip::tcp::socket::~socket() noexcept
 {
     IO_DEBUG((std::cout << "~socket: fd = " << _fd << std::endl));
 

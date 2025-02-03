@@ -57,7 +57,7 @@ namespace io
             return _right;
         }
 
-        ~channel();
+        ~channel() noexcept;
 
     private:
         /// \brief Construct the I/O channel/pipe/tube pattern implementation object.

@@ -9,7 +9,7 @@
 #include <iostream>
 
 // LCOV_EXCL_START
-io::bus::~bus()
+io::bus::~bus() noexcept
 {
     IO_DEBUG((std::cout << "~bus" << std::endl));
 }

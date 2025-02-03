@@ -42,7 +42,7 @@ namespace io
 					int tcp_backlog,
 					callback_t callback = nullptr);
 				/// @brief The acceptor destructor
-				~acceptor() override;
+				~acceptor() noexcept override;
 
 			private:
 				/// \brief Handle the new client connection event
