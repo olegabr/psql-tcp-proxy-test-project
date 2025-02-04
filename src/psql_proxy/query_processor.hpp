@@ -5,31 +5,40 @@
 #ifndef H_PSQL_PROXY_QUERY_PROCESSOR_T
 #define H_PSQL_PROXY_QUERY_PROCESSOR_T
 
+#include "message_logger.hpp"
+#include "data_processor.hpp"
+
 #include <io/bipartite_buf.hpp>
 
 #include <cstddef>
 #include <string>
-#include <fstream>
+#include <functional>
 
 /// @brief The PostgreSQL Proxy service namespace
 namespace psql_proxy
 {
-    /// @brief The PostgreSQL messages interpreter object
-    class query_processor
+    /// @brief The PostgreSQL messages processor object
+    /// It's responsibility is:
+    /// 1. collect messages using the \ref message_logger interface, and
+    /// 2. provide access for the collected messages as a one concatenated string
+    class query_processor final
+        : public message_logger,
+          public data_processor
     {
     public:
-        /// @brief Construct the PostgreSQL messages interpreter object
+        /// @brief Construct the PostgreSQL messages processor object
         /// @param query_log The file stream object to dump queries to.
-        explicit query_processor(std::ofstream &&query_log);
+        /// @param separator The separator character for messages concatenation.
+        explicit query_processor(char separator);
 
-        /// @brief Add the \p query string to the output buffer
-        /// @param query The SQL query string
-        void add_query(const std::string &query);
+    private:
+        /// @brief Log the \p message string
+        /// @param message The message string to log
+        void _add_message(const std::string &message) override;
         /// @brief Flush the output buffer to the output stream
-        /// @return The number of characters written
-        int process();
-        /// @brief Flush the output stream
-        void flush();
+        /// @param callback The callback function to provide actual messages processing code
+        /// @return The processed messages buffer length
+        std::size_t _process(const data_processor::processor_callback_t &callback) override;
 
     private:
         /// @brief The buffer size chunk
@@ -41,8 +50,8 @@ namespace psql_proxy
 
         /// @brief The buffer to read to and write from
         query_buffer_t _query_buffer;
-        /// @brief The file stream object to dump queries to.
-        std::ofstream _query_log;
+        /// @brief The separator character for messages concatenation.
+        char _separator;
     };
 }
 

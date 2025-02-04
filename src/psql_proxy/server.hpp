@@ -6,7 +6,7 @@
 #define H_PSQL_PROXY_SERVER_T
 
 #include "session.hpp"
-#include "query_processor.hpp"
+#include "message_logger.hpp"
 
 #include <io/fd.hpp>
 #include <io/v4.hpp>
@@ -32,13 +32,13 @@ namespace psql_proxy
 		/// \param address The \ref io::ip::v4 address like `127.0.0.1`
 		/// \param target_address The target address
 		/// \param tcp_backlog The TCP connections backlog value for the listening socket created
-		/// \param qp The PostgreSQL messages interpreter object
+		/// \param logger The PostgreSQL messages interpreter object
 		server(
 			io::bus_ptr io_bus,
 			const io::ip::v4 &address,
 			const io::ip::v4 &target_address,
 			int tcp_backlog,
-			query_processor *qp);
+			message_logger *logger);
 
 	private:
 		/// \brief The function to create new \ref io::ip::tcp::session_base object for the \p fd
@@ -53,7 +53,7 @@ namespace psql_proxy
 		/// \brief The target address
 		io::ip::v4 _target_address;
 		/// \brief The PostgreSQL messages interpreter object
-		query_processor *_query_processor;
+		message_logger *_message_logger;
 	};
 }
 

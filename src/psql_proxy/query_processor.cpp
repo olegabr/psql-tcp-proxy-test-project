@@ -4,13 +4,15 @@
 
 #include "query_processor.hpp"
 
-psql_proxy::query_processor::query_processor(std::ofstream &&query_log)
-    : _query_log(std::move(query_log)) {}
-
-void psql_proxy::query_processor::add_query(const std::string &query)
+psql_proxy::query_processor::query_processor(char separator)
+    : _separator(separator)
 {
-    auto pos = query.begin();
-    auto end = query.end();
+}
+
+void psql_proxy::query_processor::_add_message(const std::string &message)
+{
+    auto pos = message.begin();
+    auto end = message.end();
     do
     {
         auto last = end;
@@ -31,24 +33,19 @@ void psql_proxy::query_processor::add_query(const std::string &query)
     auto wbuf = _query_buffer.write_acquire(1);
     if (nullptr != wbuf)
     {
-        *wbuf = '\n';
+        *wbuf = _separator;
         _query_buffer.write_release(1);
     }
 }
 
-int psql_proxy::query_processor::process()
+std::size_t psql_proxy::query_processor::_process(const data_processor::processor_callback_t &callback)
 {
     auto [rbuf, len] = _query_buffer.read_acquire();
     if (nullptr != rbuf && len > 0)
     {
-        auto written_chars = _query_log.rdbuf()->sputn(rbuf, len);
+        auto written_chars = callback(rbuf, len);
         _query_buffer.read_release(written_chars);
         return written_chars;
     }
     return 0;
-}
-
-void psql_proxy::query_processor::flush()
-{
-    _query_log.flush();
 }

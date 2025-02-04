@@ -5,9 +5,8 @@
 #ifndef H_PSQL_PROXY_SESSION_T
 #define H_PSQL_PROXY_SESSION_T
 
-#include "query_processor.hpp"
+#include "message_logger.hpp"
 
-#include <io/bus.hpp>
 #include <io/socket.hpp>
 #include <io/channel.hpp>
 #include <io/session_base.hpp>
@@ -26,7 +25,7 @@ namespace psql_proxy
         session(
             const socket_ptr_t &socket,
             const socket_ptr_t &target_socket,
-            query_processor *query_processor);
+            message_logger *logger);
         ~session() final;
 
     private:

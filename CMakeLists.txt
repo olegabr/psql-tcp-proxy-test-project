@@ -53,6 +53,9 @@ set(PSQL_PROXY_SOURCES
     src/psql_proxy/session.cpp
     src/psql_proxy/handler.cpp
     src/psql_proxy/message.cpp
+    src/psql_proxy/message_logger.cpp
+    src/psql_proxy/file_writer.cpp
+    src/psql_proxy/data_processor.cpp
     src/psql_proxy/server.cpp
     src/psql_proxy/protocol/parameter_status.cpp
     src/psql_proxy/protocol/query.cpp

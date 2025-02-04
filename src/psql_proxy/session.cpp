@@ -13,12 +13,12 @@
 psql_proxy::session::session(
     const socket_ptr_t &socket,
     const socket_ptr_t &target_socket,
-    query_processor *qp)
+    message_logger *logger)
     : io::ip::tcp::session_base(socket->get_bus(), io::file_descriptors_vec_t{socket->get_fd(), target_socket->get_fd()}),
       _socket_pipe_lr(io::make_channel(socket, target_socket)),
       _socket_pipe_rl(io::make_channel(target_socket, socket))
 {
-    _socket_pipe_lr->add_handler(handler(qp, socket->get_fd(), socket->get_bus().get()));
+    _socket_pipe_lr->add_handler(handler(logger, socket->get_fd(), socket->get_bus().get()));
 }
 
 psql_proxy::session::~session()

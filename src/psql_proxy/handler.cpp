@@ -14,11 +14,11 @@
 #include <type_traits>
 
 psql_proxy::handler::handler(
-    query_processor *qp,
+    message_logger *logger,
     io::file_descriptor_t fd,
     io::bus *bus)
     : _first_msg_handled(false),
-      _query_processor(qp),
+      _message_logger(logger),
       _fd(fd),
       _bus(bus)
 {
@@ -29,10 +29,10 @@ namespace
     struct PSQL_Message_Visitor
     {
         PSQL_Message_Visitor(
-            psql_proxy::query_processor *qp,
+            psql_proxy::message_logger *logger,
             io::file_descriptor_t fd,
             io::bus *bus)
-            : _query_processor(qp),
+            : _message_logger(logger),
               _fd(fd),
               _bus(bus)
         {
@@ -45,7 +45,7 @@ namespace
         void operator()(const psql::Query &m)
         {
             // std::cout << m.query << '\n';
-            _query_processor->add_query(m.query);
+            _message_logger->add_message(m.query);
         }
         void operator()(const psql::Terminate &m)
         {
@@ -59,7 +59,7 @@ namespace
         }
 
     private:
-        psql_proxy::query_processor *_query_processor;
+        psql_proxy::message_logger *_message_logger;
         io::file_descriptor_t _fd;
         io::bus *_bus;
     };
@@ -131,7 +131,7 @@ void psql_proxy::handler::operator()(const io::input_object::result_type &result
                     pos_orig = pos;
                     if (msg)
                     {
-                        std::visit(PSQL_Message_Visitor(_query_processor, _fd, _bus), *msg);
+                        std::visit(PSQL_Message_Visitor(_message_logger, _fd, _bus), *msg);
                     }
                 };
             }
@@ -201,7 +201,7 @@ void psql_proxy::handler::operator()(const io::input_object::result_type &result
                     }
                     if (msg)
                     {
-                        std::visit(PSQL_Message_Visitor(_query_processor, _fd, _bus), *msg);
+                        std::visit(PSQL_Message_Visitor(_message_logger, _fd, _bus), *msg);
                     }
                 } while (do_continue);
             }

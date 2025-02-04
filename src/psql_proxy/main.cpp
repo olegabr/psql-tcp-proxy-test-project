@@ -3,6 +3,8 @@
 /// @copyright MIT
 
 #include "server.hpp"
+#include "query_processor.hpp"
+#include "file_writer.hpp"
 
 #include <io/error.hpp>
 #include <io/epoll.hpp>
@@ -17,7 +19,8 @@
 
 namespace
 {
-    std::shared_ptr<io::context> io_context;
+    /// \brief The I/O reactor pattern object
+    io::context_ptr io_context;
     void _cleanup(int signo)
     {
         std::cerr << "\nInterrupted with signal: " << signo << std::endl;
@@ -39,9 +42,6 @@ int main(int argc, char *argv[])
 
     try
     {
-        io::bus_ptr io_bus =
-            std::make_shared<io::system::epoll>(EPOLLIN | EPOLLOUT | EPOLLPRI | EPOLLET);
-
         std::string host = "127.0.0.1";
         if (argc > 1)
         {
@@ -78,52 +78,35 @@ int main(int argc, char *argv[])
         std::cout << "target_port: " << target_port << std::endl;
         std::cout << "query_log_path: " << query_log_path << std::endl;
 
+        /// \brief The endpoint this server is listening to
         const io::ip::v4 endpoint_address(host, port);
+        /// \brief The address to proxy traffic to
         const io::ip::v4 target_address(target_host, target_port);
+        /// \brief The tcp backlog queue length
         const uint32_t tcp_backlog = 1024;
 
+        /// \brief The \ref io::bus implementation based on the GNU/Linux kernel epoll async I/O API.
+        io::bus_ptr io_bus =
+            std::make_shared<io::system::epoll>(EPOLLIN | EPOLLOUT | EPOLLPRI | EPOLLET);
+
+        /// \brief The I/O reactor pattern object
         io_context = std::make_shared<io::context>(io_bus, std::chrono::milliseconds{10});
 
-        psql_proxy::query_processor qp(
-            std::ofstream(query_log_path, std::ios::trunc));
+        /// @brief The PostgreSQL messages processor object
+        psql_proxy::query_processor query_processor('\n');
 
+        /// \brief The server for the PostgreSQL Proxy service
         psql_proxy::server tcp_server(
             io_bus,
             endpoint_address,
             target_address,
             tcp_backlog,
-            &qp);
+            &query_processor);
 
-        auto io_context_local = io_context;
-        auto writer_func = [&io_context_local, &qp]()
-        {
-            using timer = std::chrono::system_clock;
-            auto tm = timer::now();
-            while (!io_context_local->is_stop_requested())
-            {
-                // std::cout << "writer thread" << std::endl;
-                const int written_chars = qp.process();
-                if (0 == written_chars)
-                {
-                    // alternative is a conditional with a mutex, but it would add significant overhead
-                    // while this task can safely wait for 100 msec if no data available.
-                    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-                }
-                else
-                {
-                    // std::cout << "writer thread written_chars = " << written_chars << std::endl;
-                }
-                auto now = timer::now();
-                auto elapsed = now - tm;
-                if (100 <= std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count())
-                {
-                    qp.flush();
-                    tm = now;
-                }
-            }
-            qp.flush();
-        };
-        std::thread writer(writer_func);
+        /// @brief The file stream object to dump queries to.
+        std::ofstream query_log_file(query_log_path, std::ios::trunc);
+        psql_proxy::file_writer sql_queries_writer(io_context, &query_processor, &query_log_file);
+        std::thread writer_thread(sql_queries_writer);
 
         auto error_handler = [](io::event_reciever *reciever, io::error const &ex)
         {
@@ -133,7 +116,7 @@ int main(int argc, char *argv[])
                       << std::endl;
         };
         io_context->run(error_handler);
-        writer.join();
+        writer_thread.join();
 
         std::cout << "psql_proxy service finish" << std::endl;
     }
