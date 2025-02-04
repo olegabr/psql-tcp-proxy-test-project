@@ -9,6 +9,10 @@ psql_proxy::query_processor::query_processor(char separator)
 {
 }
 
+psql_proxy::query_processor::~query_processor() noexcept
+{
+}
+
 void psql_proxy::query_processor::_add_message(const std::string &message)
 {
     auto pos = message.begin();

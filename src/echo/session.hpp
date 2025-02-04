@@ -23,7 +23,7 @@ namespace echo
         /// \param socket The client socket
         explicit session(const io::ip::tcp::socket_ptr &socket);
         /// \brief Destroy the echo session object
-        ~session() final;
+        ~session() override;
 
     private:
         /// \brief from client to server channel

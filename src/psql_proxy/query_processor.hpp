@@ -30,11 +30,13 @@ namespace psql_proxy
         /// @param query_log The file stream object to dump queries to.
         /// @param separator The separator character for messages concatenation.
         explicit query_processor(char separator);
+        ~query_processor() noexcept override;
 
     private:
         /// @brief Log the \p message string
         /// @param message The message string to log
-        void _add_message(const std::string &message) override;
+        void
+        _add_message(const std::string &message) override;
         /// @brief Flush the output buffer to the output stream
         /// @param callback The callback function to provide actual messages processing code
         /// @return The processed messages buffer length
