@@ -81,18 +81,6 @@ namespace io
 				/// @brief Close this socket with all exceptions catched.
 				/// Useful in destructor
 				void _close_connection_noexcept() noexcept;
-				void _check_fd();
-
-				/// @brief Read available data asynchronously.
-				/// @param buf The buffer to write the recieved data to
-				/// @param buf_len The length of the \p buf
-				/// @return The read bytes count
-				std::size_t _async_read_some_impl(value_t *buf, std::size_t buf_len);
-				/// @brief Write data asynchronously.
-				/// @param buf The buffer of data to write from
-				/// @param buf_len The length of the \p buf
-				/// @return The written bytes count
-				std::size_t _async_write_some_impl(const value_t *buf, std::size_t buf_len);
 
 			private:
 				/// \brief The \ref io::bus object instance to connect to the system level I/O

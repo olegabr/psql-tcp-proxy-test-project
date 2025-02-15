@@ -86,85 +86,62 @@ const io::bus_ptr &io::ip::tcp::socket::_get_bus()
 
 io::input_object::result_type io::ip::tcp::socket::_async_read_some(value_t *buf, std::size_t buf_len)
 {
-    try
+    if (-1 == _fd)
     {
-        const std::size_t bytes_recvd = _async_read_some_impl(buf, buf_len);
-        return io::input_object::success_result_type{_fd, buf, bytes_recvd};
+        return io::error("closed socket used", _fd, errno);
     }
-    catch (io::error &err)
-    {
-        return err;
-    }
-}
-
-std::size_t io::ip::tcp::socket::_async_read_some_impl(value_t *buf, std::size_t buf_len)
-{
-    _check_fd();
 
     errno = 0;
-    const ssize_t bytes_recvd = ::recv(_fd, buf, buf_len, MSG_DONTWAIT);
+    const std::size_t bytes_recvd = ::recv(_fd, buf, buf_len, MSG_DONTWAIT);
 
-    if (bytes_recvd == 0)
+    switch (bytes_recvd)
     {
+    case 0ul:
         // // client disconnected
         // _close_connection();
-        throw io::error("zero bytes read in recv", _fd, errno);
-    }
-
-    if (bytes_recvd == -1)
-    {
+        return io::error("zero bytes read in recv", _fd, errno);
+    case -1ul:
         switch (errno)
         {
         case EINTR:
         case EAGAIN:
         case EINPROGRESS:
-            return 0;
+            return io::input_object::success_result_type{_fd, buf, 0};
         default:
             IO_DEBUG((std::cout << "socket::_async_read_some_impl: recv() error. _close_connection()\n"));
             // _close_connection();
-            throw io::error("recv failed", _fd, errno);
+            return io::error("recv failed", _fd, errno);
         }
     }
-    return bytes_recvd;
+
+    return io::input_object::success_result_type{_fd, buf, bytes_recvd};
 }
 
 io::output_object::result_type io::ip::tcp::socket::_async_write_some(const value_t *buf, std::size_t buf_len)
 {
-    try
+    if (-1 == _fd)
     {
-        const std::size_t bytes_sent = _async_write_some_impl(buf, buf_len);
-        return io::output_object::success_result_type{_fd, buf, bytes_sent};
+        return io::error("closed socket used", _fd, errno);
     }
-    catch (io::error &err)
-    {
-        return err;
-    }
-}
-
-std::size_t io::ip::tcp::socket::_async_write_some_impl(const value_t *buf, std::size_t buf_len)
-{
-    _check_fd();
 
     errno = 0;
-    const ssize_t bytes_sent = ::send(_fd, buf, buf_len, MSG_DONTWAIT);
+    const std::size_t bytes_sent = ::send(_fd, buf, buf_len, MSG_DONTWAIT);
 
-    if (bytes_sent == -1)
+    if (bytes_sent == -1ul)
     {
         switch (errno)
         {
         case EINTR:
-            return 0;
         case EAGAIN:
-            return 0;
         case EINPROGRESS:
-            return 0;
+            return io::output_object::success_result_type{_fd, buf, 0};
         default:
             IO_DEBUG((std::cout << "socket::_async_write_some_impl: send() error. _close_connection()\n"));
             // _close_connection();
-            throw io::error("send failed", _fd, errno);
+            return io::error("send failed", _fd, errno);
         }
     }
-    return bytes_sent;
+    return io::output_object::success_result_type{_fd, buf, bytes_sent};
 }
 
 void io::ip::tcp::socket::_close_connection_noexcept() noexcept
@@ -222,13 +199,5 @@ void io::ip::tcp::socket::_close_connection()
         // failed to close connection. restore fd
         _fd = fd;
         throw io::error("failed to close socket fd", fd, errno);
-    }
-}
-
-void io::ip::tcp::socket::_check_fd()
-{
-    if (-1 == _fd)
-    {
-        throw std::logic_error("closed socket used");
     }
 }
